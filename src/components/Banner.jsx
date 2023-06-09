@@ -5,26 +5,35 @@ const Banner = () => {
     <div>
       <div className="carousel w-full">
         <div id="item1" className="carousel-item w-full">
+          <div className="absolute w-full h-full text-center text-gray-200 rounded-2xl bg-black/6  flex flex-col justify-center">
+            <h1 className="px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
+              <span className="text-black">Yoga and</span><span className="text-blue-500"> Meditation</span>
+            </h1>
+            <h1 className="px-4 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold">
+              {" "}
+              <span className="text-red-600"> Good for</span> <span className="text-black">Mental</span> <span className="text-green-600">Health</span>
+            </h1>
+          </div>
           <img
-            src="/images/stock/photo-1625726411847-8cbb60cc71e6.jpg"
+            src="https://images.pexels.com/photos/775417/pexels-photo-775417.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             className="w-full"
           />
         </div>
         <div id="item2" className="carousel-item w-full">
           <img
-            src="/images/stock/photo-1609621838510-5ad474b7d25d.jpg"
+            src="https://images.pexels.com/photos/5928615/pexels-photo-5928615.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             className="w-full"
           />
         </div>
         <div id="item3" className="carousel-item w-full">
           <img
-            src="/images/stock/photo-1414694762283-acccc27bca85.jpg"
+            src="https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             className="w-full"
           />
         </div>
         <div id="item4" className="carousel-item w-full">
           <img
-            src="/images/stock/photo-1665553365602-b2fb8e5d1707.jpg"
+            src="https://images.pexels.com/photos/3820380/pexels-photo-3820380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             className="w-full"
           />
         </div>

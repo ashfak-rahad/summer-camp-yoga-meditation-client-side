@@ -75,6 +75,16 @@ const Navbar = () => {
             Classes
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive ? "active" : "font-bold uppercase"
+            }
+          >
+            Login
+          </NavLink>
+        </li>
 
         {/* <li className="md:ml-16">
                     <Link to="/dashboard/my-cart"><p className="relative w-6"><BiCart/> <span className="bg-[#c02727] absolute -top-5 -right-4 inline-block px-2 rounded-full">{carts.length || 0}</span></p></Link>
