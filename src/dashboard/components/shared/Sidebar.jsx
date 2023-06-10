@@ -19,7 +19,7 @@ const Sidebar = () => {
             <ul className="mt-[60px]">
 
                 {
-                   isAdmin ? <>
+                   admin ? <>
                     <li className="mt-4"><NavLink to="/dashboard/admin" className={({isActive}) => isActive ? "d-active flex gap-2 text-[16px] items-center": "uppercase flex gap-2 text-[16px] items-center"}><HiHome className="text-[24px]"/><span>Admin Home</span></NavLink></li>
                 <li className="mt-4"><NavLink to="/dashboard/add-items" className={({isActive}) => isActive ? "d-active flex gap-2 text-[16px] items-center": "uppercase flex gap-2 text-[16px] items-center"}><FaRegCalendarAlt className="text-[24px]"/><span>Add Items</span></NavLink></li>
                 <li className="mt-4"><NavLink to="/dashboard/manage-items" className={({isActive}) => isActive ? "d-active flex gap-2 text-[16px] items-center": "uppercase flex gap-2 text-[16px] items-center"}><IoWallet className="text-[24px]"/><span>manage items</span></NavLink></li>
