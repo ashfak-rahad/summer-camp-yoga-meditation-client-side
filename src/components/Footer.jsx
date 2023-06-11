@@ -129,7 +129,7 @@ const Footer = () => {
         <div className="bg-gray-800 bg-opacity-75">
           <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
             <p className="text-gray-400 text-sm text-center sm:text-left">
-              @ 2023 Best Toy Robots -{" "}
+              @ 2023 Best for Mental Health -{" "}
               <Link to="/about" className="text-gray-500 ml-1">
                 About Us
               </Link>
