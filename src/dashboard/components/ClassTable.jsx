@@ -13,7 +13,7 @@ const ClassTable = ({singleClass, i }) => {
             <td className="py-2 text-center">{feedback || "No Feedback Here"}</td>
             <td className="py-2 text-center">{status}</td>
             <td className="py-2 text-center "><Link to={`/dashboard/${_id}/edit`}>
-            <button className={`bg-main p-3 rounded text-white block mx-auto`}>
+            <button className={`bg-indigo-600 p-3 rounded text-white block mx-auto`}>
                  <FaEdit/>
                 </button>
                 </Link></td>
