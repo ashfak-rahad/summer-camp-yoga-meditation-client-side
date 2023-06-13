@@ -1,9 +1,9 @@
 import useMyClasses from "../../hooks/useMyClasses";
-import useTitle from "../../hooks/useTitle";
+
 import ClassTable from "../components/ClassTable";
 
 const MyClasses = () => {
-    useTitle("My Classes")
+    
     const {classes} = useMyClasses()
 
     return (
@@ -14,7 +14,7 @@ const MyClasses = () => {
         <section  className='h-[650px] mt-2 overflow-x-auto relative'>
             <table className='w-full'>
                 <thead >
-                    <tr className='bg-main sticky top-0 px-10'>
+                    <tr className='bg-indigo-600 sticky top-0 px-10'>
                         <th className='py-3  text-white'></th>
                         <th className='py-3  text-white'>Class Image</th>
                         <th className='py-3  text-white'>Total enrolled</th>
