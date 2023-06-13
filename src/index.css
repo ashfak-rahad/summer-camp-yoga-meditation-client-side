@@ -15,5 +15,5 @@
 }
 
 .d-active {
-    @apply text-white font-bold uppercase duration-300
+    @apply text-indigo-600 font-bold uppercase duration-300
 }
