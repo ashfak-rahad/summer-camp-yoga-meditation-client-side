@@ -3,8 +3,9 @@ import { useAuth } from "../../context/AuthProvider";
 
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import useClass from "../../hooks/useClass";
+
 import { useParams } from "react-router-dom";
+import useClass from "../../hooks/useClass";
 
 const EditClass = () => {
   
