@@ -156,7 +156,7 @@ const SignUp = () => {
                     <p className='text-[#399d23]'>{success && success}</p>
 
                     <div className='flex flex-col md:flex-row items-center gap-5'>
-                    <button type='submit' className='bg-main  p-2  rounded-xl text-white w-full  text-[21px] '>Sign Up</button>         
+                    <button type='submit' className='bg-indigo-600  p-2  rounded-xl text-white w-full  text-[21px] '>Sign Up</button>         
        
 
                     <div onClick={handelGoogle} className='cursor-pointer p-2 border rounded-full w-full flex justify-center items-center gap-[6px] '><FcGoogle className='text-[32px]'/><span>Continue with Google</span></div>  

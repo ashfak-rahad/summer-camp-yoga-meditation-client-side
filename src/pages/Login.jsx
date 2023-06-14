@@ -105,7 +105,7 @@ const Login = () => {
                     </div>
                     <p className='text-[#da4747]'>{error && error}</p> 
                    <div className='flex flex-col md:flex-row items-center gap-5'>
-                   <button type='submit' className='bg-main  p-2  rounded-full text-white w-full  text-[21px] '>Login</button>         
+                   <button type='submit' className='bg-indigo-600  p-2  rounded-full text-white w-full  text-[21px] '>Login</button>         
 
                     <div onClick={handelGoogle} className='cursor-pointer p-2 border rounded-full w-full flex justify-center items-center gap-[6px] '><FcGoogle className='text-[32px]'/><span>Continue with Google</span></div>  
                     
