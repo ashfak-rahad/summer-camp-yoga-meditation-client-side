@@ -1,15 +1,20 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "/logo.png";
+import { HiOutlineMenuAlt2 } from "react-icons/hi";
+import { AiOutlineLogin } from "react-icons/ai";
 
 import { HiMenuAlt1 } from "react-icons/hi";
-// import { BiCart } from "react-icons/bi";
+
 import { MdClose } from "react-icons/md";
 import { useState } from "react";
+import { useAuth } from "../context/AuthProvider";
+import useAuthorization from "../hooks/useAuthorization";
 
 const Navbar = () => {
   const [toggle, seToggle] = useState(false);
-  // const {user, logOut} = useAuth()
-  // const {carts} = useCart()
+  const { user, logOut } = useAuth();
+  const { role } = useAuthorization();
+
   return (
     <nav className="flex justify-between px-3 py-2 md:px-[55px] z-[1000000] fixed top-0 left-0 right-0 bg-slate-600">
       <h1 className="text-3xl font-bold">
@@ -56,14 +61,21 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive ? "active" : "font-bold uppercase"
-            }
-          >
-            Dashboard
-          </NavLink>
+          {user?.email && (
+            <NavLink
+              to={`/dashboard/${
+                role === "admin"
+                  ? "manage-classes"
+                  : role === "instructor"
+                  ? "add-class"
+                  : "selected-classes"
+              }`}
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              {" "}
+              Dashboard
+            </NavLink>
+          )}
         </li>
         <li>
           <NavLink
@@ -76,24 +88,36 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink
-            to="/login"
-            className={({ isActive }) =>
-              isActive ? "active" : "font-bold uppercase"
-            }
-          >
-            Login
-          </NavLink>
+          {user?.photoURL ? (
+            <img
+              className="w-[35px] h-[35px] rounded-full cursor-pointer"
+              src={user?.photoURL}
+              title={user.displayName}
+              alt=""
+            />
+          ) : (
+            ""
+          )}
         </li>
         <li>
-          <NavLink
-            to="/sign-up"
-            className={({ isActive }) =>
-              isActive ? "active" : "font-bold uppercase"
-            }
-          >
-            Sign Up
-          </NavLink>
+          {user ? (
+            <button
+              onClick={logOut}
+              className=" text-main px-4 py-2 flex items-center gap-2  rounded p-3"
+            >
+              <AiOutlineLogin /> LogOut
+            </button>
+          ) : (
+            <button>
+              <Link
+                className="flex items-center gap-2 p-3  text-main"
+                to="/login"
+              >
+                {" "}
+                <AiOutlineLogin /> Login
+              </Link>
+            </button>
+          )}
         </li>
 
         {/* <li className="md:ml-16">
