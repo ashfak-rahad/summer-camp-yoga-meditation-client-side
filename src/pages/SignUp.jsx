@@ -1,81 +1,176 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import { Link } from 'react-router-dom';
+import {  updateProfile } from 'firebase/auth';
+import { useState } from 'react';
+
+
+import { useForm } from 'react-hook-form';
+
+import Swal from "sweetalert2";
+import { useAuth } from "../context/AuthProvider";
+import useAxiosSecure from "../hooks/useAxiosSecure";
+    
+    
+
 
 const SignUp = () => {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
-      <div className="hidden sm:block">
-        <img
-          className="w-full h-full object-cover rounded-2xl"
-          src="https://images.pexels.com/photos/11001515/pexels-photo-11001515.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          alt=""
-        />
-      </div>
 
-      <div className="bg-gray-800 flex flex-col justify-center">
-        <form className="max-w-[400px] w-full mx-auto rounded-lg bg-gray-900 p-8 px-8">
-          <h2 className="text-4xl dark:text-white font-bold text-center">
-            Registration
-          </h2>
-          <div className="flex flex-col text-gray-400 py-2">
-            <label>Username</label>
-            <input
-              className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
-              type="text"
-              name="name"
-            />
-          </div>
-          <div className="flex flex-col text-gray-400 py-2">
-            <label>Email</label>
-            <input
-              className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
-              type="text"
-              name="email"
-            />
-          </div>
-          <div className="flex flex-col text-gray-400 py-2">
-            <label>Password</label>
-            <input
-              className="p-2 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
-              type="password"
-              name="password"
-            />
-          </div>
-          <div className="flex flex-col text-gray-400 py-2">
-            <label>Confirm Password</label>
-            <input
-              className="p-2 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
-              type="password"
-              name="confirm"
-            />
-          </div>
-          <div className="flex flex-col text-gray-400 py-2">
-            <label>Photo URL</label>
-            <input
-              className="p-2 rounded-lg bg-gray-700 mt-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none"
-              type="password"
-              name="photo"
-            />
-          </div>
-          <div className="flex justify-between text-gray-400 py-2">
-            <p className="flex items-center">
-              <input className="mr-2" type="checkbox" /> Remember Me
-            </p>
-            <p>Forgot Password</p>
-          </div>
-          <div className=" mt-3 text-sm flex justify-between items-center">
-            <p>It you  have an account?</p>
-            <Link to="/login" className="py-2 px-5 bg-white border rounded-xl">
-              Login 
-            </Link>
-          </div>
-          <button className="w-full my-5 py-2 bg-teal-500 shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg">
-            SIGNIN
-          </button>
-        </form>
-      </div>
-    </div>
-  );
+    const {register, handleSubmit, reset} = useForm()
+    const {createUser, signInWithGoogle} = useAuth()
+    const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
+    const {axiosSecure} = useAxiosSecure()
+    const hendleForm = (data) => {
+
+
+        const name = data.name
+        const email = data.email
+        const password = data.password
+        const confirm_password = data.confirm_password
+        const profileUrl = data.profile
+
+
+        setError(null)
+        setSuccess(null)
+
+        if(!name || !profileUrl || !email || !password || !confirm_password) {
+            setError("Cannot leave any field empty")
+            return
+        } 
+        
+        if(password.length < 6) {
+            setError("is less than 6 characters")
+            return
+        }
+       
+        if(!/(?=.*?[A-Z])/.test(password)) {
+            setError("don't have a capital letter")
+            return 
+        }
+        if(!/(?=.*?[#?!@$%^&*-])/.test(password)) {
+            setError("don't have a special character")
+            return 
+        }
+        if(password !== confirm_password) {
+            setError("password Are not match")
+            return 
+        }
+        createUser(email, password) 
+        .then ((result) => {
+            updateProfile(result.user, {
+                displayName: name,
+                photoURL: profileUrl
+            }) 
+            
+            const user = {
+                name: name,
+                email: email,
+                photo_url: profileUrl
+            }
+            axiosSecure.put(`/add-user?email=${user?.email}`, user)
+                .then(res => {
+                    console.log(res)
+                    if(res.data) {                       
+                        
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Sign Up sucessfull',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+                          
+                        }
+                    })
+                    navigate("/")
+                
+                setSuccess("Registration successfull")
+                reset()
+
+        }) 
+        .catch(error => {
+            // setError(error)
+        })
+    }
+
+
+    const handelGoogle = () => {
+        signInWithGoogle()
+            .then((result) => {
+                const user = {
+                    name: result?.user?.displayName,
+                    email: result?.user?.email,
+                    photo_url: result?.user?.photoURL
+                }
+
+                
+                axiosSecure.put(`/add-user?email=${user?.email}`, user)
+                .then(res => {
+                    if(res.data) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Login sucessfull',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+                    }
+                })
+                navigate(from)
+            })
+            .catch((error) => {
+            })
+    }
+
+
+    return (
+        <main className='w-full'>
+            
+           <section className='max-w-[1240px] flex  items-center w-full h-[70vh] gap-5'>
+           <section className='p-[25px] mt-20 w-full md:mr-auto md:w-1/2 border'>
+                <h2 className='text-3xl font-bold'>Create An Account</h2>
+
+                <p className='mt-[8px]'>Already have an account? <Link to="/login" className='text-main'>Login</Link> </p>    
+                <form onSubmit={handleSubmit(hendleForm)}>
+                    <div className='flex flex-col my-3'>
+                        <label htmlFor="name">Name</label>
+                        <input type="text" {...register("name")} id="name" className='border-b-2 rounded w-full p-2 text-base outline-none' autoComplete='off' placeholder='Name' />
+                    </div>
+                    <div className='flex flex-col my-3'>
+                        <label htmlFor="profile">Profile pic url</label>
+                        <input type="text" {...register("profile", )} id="profile" className='border-b-2 w-full rounded p-2 text-base outline-none' autoComplete='off' placeholder='Profile pic url' />
+                    </div>
+                    <div className='flex flex-col my-3'>
+                        <label htmlFor="email">Email</label>
+                        <input type="email"  {...register("email", {required: true})} id="email" className='border-b-2 w-full rounded p-2 text-base outline-none' autoComplete='off' placeholder='email' required/>
+                    </div>
+                    <div className='flex flex-col my-3'>
+                        <label htmlFor="password" >Password</label>
+                        <input type="password"  {...register("password")} id="password" className='border-b-2 w-full rounded p-2 text-base outline-none' autoComplete='off' placeholder='password' />
+                    </div> 
+                    <div className='flex flex-col my-3'>
+                        <label htmlFor="confirm_password" >Confirm Password</label>
+                        <input type="password" {...register("confirm_password")} id="confirm_password" className='border-b-2 w-full rounded p-2 text-base outline-none' autoComplete='off' placeholder='password' />
+                    </div> 
+                    <p className='text-[#da4747]'>{error && error}</p>
+                    <p className='text-[#399d23]'>{success && success}</p>
+
+                    <div className='flex flex-col md:flex-row items-center gap-5'>
+                    <button type='submit' className='bg-main  p-2  rounded-xl text-white w-full  text-[21px] '>Sign Up</button>         
+       
+
+                    <div onClick={handelGoogle} className='cursor-pointer p-2 border rounded-full w-full flex justify-center items-center gap-[6px] '><FcGoogle className='text-[32px]'/><span>Continue with Google</span></div>  
+                    
+                   </div>
+                    
+
+                </form>
+            </section>
+           </section>
+
+        </main>
+        
+    );
 };
 
 export default SignUp;
